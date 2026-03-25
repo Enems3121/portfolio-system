@@ -4,3 +4,5 @@ plotly==5.18.0
 pyyaml==6.0.1
 APScheduler
 python-dotenv
+requests
+psycopg2-binary
