@@ -1,38 +1,44 @@
 import os
 import sqlite3
-import pandas as pd
 from datetime import datetime
 
 # Check if a PostgreSQL URL is provided (cloud deployment)
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 
-def _get_conn():
-    """Returns a database connection — PostgreSQL if DATABASE_URL is set, else SQLite."""
-    if DATABASE_URL:
+def _test_pg_connection(url):
+    """Test if a PostgreSQL connection is usable. Returns True/False."""
+    try:
         import psycopg2
-        import psycopg2.extras
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        return conn, 'pg'
-    else:
-        import sqlite3
-        return None, 'sqlite'  # handled per method
+        conn = psycopg2.connect(url, connect_timeout=5)
+        conn.close()
+        return True
+    except Exception:
+        return False
 
 class PortfolioDB:
     def __init__(self, db_path='data/portfolio.db'):
         self.db_path = db_path
-        self.use_pg = bool(DATABASE_URL)
+        # Initialize use_pg to None, it will be set by _connect
+        self.use_pg = None
         self._init_db()
 
     def _connect(self):
-        """Get a fresh connection."""
-        if self.use_pg:
-            import psycopg2
-            import psycopg2.extras
-            return psycopg2.connect(DATABASE_URL, sslmode='require')
-        else:
-            import sqlite3
-            os.makedirs(os.path.dirname(self.db_path) if os.path.dirname(self.db_path) else '.', exist_ok=True)
-            return sqlite3.connect(self.db_path)
+        """Get a fresh connection — PostgreSQL if working, else SQLite."""
+        if DATABASE_URL:
+            try:
+                import psycopg2
+                import psycopg2.extras
+                conn = psycopg2.connect(DATABASE_URL, connect_timeout=10, sslmode='require')
+                self.use_pg = True
+                return conn
+            except Exception:
+                # PostgreSQL connection failed, fall back to SQLite
+                pass
+
+        # If DATABASE_URL is not set, or PG connection failed, use SQLite
+        self.use_pg = False
+        os.makedirs(os.path.dirname(self.db_path) if os.path.dirname(self.db_path) else '.', exist_ok=True)
+        return sqlite3.connect(self.db_path)
 
     def _init_db(self):
         conn = self._connect()
