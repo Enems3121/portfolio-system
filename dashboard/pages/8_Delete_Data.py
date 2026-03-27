@@ -8,6 +8,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from src.core.database import PortfolioDB
 from src.core.portfolio import PortfolioManager
+from src.utils.notifier import send_daily_report
 
 st.set_page_config(page_title="Delete Data", page_icon="🗑️", layout="wide")
 
@@ -34,6 +35,7 @@ with tab1:
         
         if st.button(f"Delete {selected_symbol}", type="primary"):
             db.delete_holding(selected_symbol)
+            send_daily_report(db, pm)
             st.success(f"Successfully deleted {selected_symbol}!")
             st.rerun()
             
@@ -61,6 +63,7 @@ with tab2:
         
         if st.button("Delete Selected Transaction", type="primary"):
             db.delete_transaction(selected_trans)
+            send_daily_report(db, pm)
             st.success("Successfully deleted the transaction!")
             st.rerun()
 
