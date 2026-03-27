@@ -36,9 +36,16 @@ with tab1:
                 ["LIQUID", "LAND", "BUSINESS"]
             )
             
+            # Map pillars to their relevant asset types
+            asset_type_options = {
+                "LIQUID": ["Cash", "Forex", "Option", "ETF"],
+                "LAND": ["REIT", "Gold"],
+                "BUSINESS": ["Stock", "ETF"]
+            }
+            
             asset_type = st.selectbox(
                 "Asset Type",
-                ["REIT", "Stock", "Gold", "Forex", "Cash", "ETF", "Option"]
+                options=asset_type_options.get(pillar, ["Stock", "ETF", "Cash"])
             )
             
             symbol = st.text_input("Symbol (e.g., TSLA 240621C180)", "").upper()
