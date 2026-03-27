@@ -59,15 +59,15 @@ def daily_scheduled_report():
 if __name__ == "__main__":
     scheduler = BlockingScheduler()
     
-    # Send daily report at 6:00 PM (18:00)
-    scheduler.add_job(daily_scheduled_report, 'cron', hour=18, minute=0)
+    # Send daily report at 11:00 PM (23:00)
+    scheduler.add_job(daily_scheduled_report, 'cron', hour=23, minute=0)
     
     # Check for alerts every morning at 9:00 AM
     scheduler.add_job(check_for_alerts, 'cron', hour=9, minute=0)
     
     print("🚀 Portfolio Scheduler is running...")
     print("--- Scheduled Jobs ---")
-    print("1. Daily Report: 18:00 (6:00 PM)")
+    print("1. Daily Report: 23:00 (11:00 PM)")
     print("2. Danger Alerts: 09:00 (9:00 AM)")
     print("-----------------------")
     print("Press Ctrl+C to exit")
