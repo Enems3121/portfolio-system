@@ -27,27 +27,27 @@ tab1, tab2, tab3 = st.tabs(["🆕 New Holding", "💰 Transaction", "💵 Price 
 with tab1:
     st.subheader("Add New Holding")
     
+    pillar = st.selectbox(
+        "Pillar",
+        ["LIQUID", "LAND", "BUSINESS"]
+    )
+    
+    # Map pillars to their relevant asset types
+    asset_type_options = {
+        "LIQUID": ["Cash", "Forex", "Option", "ETF"],
+        "LAND": ["REIT", "Gold"],
+        "BUSINESS": ["Stock", "ETF"]
+    }
+    
+    asset_type = st.selectbox(
+        "Asset Type",
+        options=asset_type_options.get(pillar, ["Stock", "ETF", "Cash"])
+    )
+    
     with st.form("new_holding_form"):
         col1, col2 = st.columns(2)
         
         with col1:
-            pillar = st.selectbox(
-                "Pillar",
-                ["LIQUID", "LAND", "BUSINESS"]
-            )
-            
-            # Map pillars to their relevant asset types
-            asset_type_options = {
-                "LIQUID": ["Cash", "Forex", "Option", "ETF"],
-                "LAND": ["REIT", "Gold"],
-                "BUSINESS": ["Stock", "ETF"]
-            }
-            
-            asset_type = st.selectbox(
-                "Asset Type",
-                options=asset_type_options.get(pillar, ["Stock", "ETF", "Cash"])
-            )
-            
             symbol = st.text_input("Symbol (e.g., TSLA 240621C180)", "").upper()
             
             name = st.text_input("Full Name / Description", "")
