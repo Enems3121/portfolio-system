@@ -110,7 +110,7 @@ with tab1:
         st.warning("No money market holdings. Add KDI Save or TnG GO+ in 'Add Data' page.")
         
         if st.button("➕ Add Money Market Account"):
-            st.switch_page("pages/6_➕_Add_Data.py")
+            st.switch_page("pages/6_Add_Data.py")
 
 with tab2:
     st.subheader("Trading Vault Status")
@@ -296,7 +296,7 @@ with tab3:
     else:
         st.info("No options positions found in the LIQUID pillar.")
         if st.button("➕ Add your first Option Position"):
-            st.switch_page("pages/6_➕_Add_Data.py")
+            st.switch_page("pages/6_Add_Data.py")
 
 st.markdown("---")
 
