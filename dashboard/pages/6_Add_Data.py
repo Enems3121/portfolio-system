@@ -8,6 +8,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from src.core.database import PortfolioDB
 from src.core.portfolio import PortfolioManager
+from src.utils.notifier import send_daily_report
 
 st.set_page_config(page_title="Add Data", page_icon="➕", layout="wide")
 
@@ -114,6 +115,8 @@ with tab1:
                     'notes': f'Initial purchase of {name}'
                 })
                 
+                send_daily_report(db, pm)
+                
                 st.success(f"✓ Added {quantity} units of {symbol} worth RM {current_value:,.2f}")
                 st.balloons()
 
@@ -166,6 +169,8 @@ with tab2:
                 'notes': trans_notes
             })
             
+            send_daily_report(db, pm)
+            
             st.success(f"✓ Transaction recorded: {trans_type} RM {trans_amount:,.2f}")
 
 with tab3:
@@ -188,6 +193,7 @@ with tab3:
                 
                 if st.button(f"Update {holding['symbol']}", key=f"btn_{holding['id']}"):
                     pm.update_holding_price(holding['symbol'], new_price)
+                    send_daily_report(db, pm)
                     st.success(f"✓ Updated {holding['symbol']} to RM {new_price:.2f}")
                     st.rerun()
     else:
