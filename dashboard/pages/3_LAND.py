@@ -113,7 +113,7 @@ with tab2:
         """)
         
         if st.button("➕ Add Gold Holding"):
-            st.switch_page("pages/6_➕_Add_Data.py")
+            st.switch_page("pages/6_Add_Data.py")
 
 st.markdown("---")
 
